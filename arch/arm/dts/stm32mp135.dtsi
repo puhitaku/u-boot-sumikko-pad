@@ -1,12 +1,1 @@
-// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-/*
- * Copyright (C) STMicroelectronics 2021 - All Rights Reserved
- * Author: Alexandre Torgue <alexandre.torgue@foss.st.com> for STMicroelectronics.
- */
-
-#include "stm32mp133.dtsi"
-
-/ {
-	soc {
-	};
-};
+../../../devicetree-rebasing/src/arm/st/stm32mp135.dtsi

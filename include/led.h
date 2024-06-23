@@ -176,4 +176,44 @@ static inline int led_boot_blink(void)
 #endif
 #endif
 
+#ifdef CONFIG_LED_ACTIVITY_ENABLE
+
+#define LED_ACTIVITY_PERIOD CONFIG_SYS_HZ / CONFIG_LED_ACTIVITY_PERIOD
+
+/**
+ * led_activity_on() - turn ON the designated LED for activity
+ *
+ * Return: 0 if OK, -ve on error
+ */
+static inline int led_activity_on(void)
+{
+	return led_set_state_by_label(CONFIG_LED_ACTIVITY_LABEL, LEDST_ON);
+}
+
+/**
+ * led_activity_off() - turn OFF the designated LED for activity
+ *
+ * Return: 0 if OK, -ve on error
+ */
+static inline int led_activity_off(void)
+{
+	return led_set_state_by_label(CONFIG_LED_ACTIVITY_LABEL, LEDST_OFF);
+}
+
+#ifdef CONFIG_LED_BLINK
+/**
+ * led_activity_blink() - turn ON the designated LED for activity
+ *
+ * Return: 0 if OK, -ve on error
+ */
+static inline int led_activity_blink(void)
+{
+	return led_set_period_by_label(CONFIG_LED_ACTIVITY_LABEL, LED_BOOT_PERIOD);
+}
+#else
+/* If LED BLINK is not supported/enabled, fallback to LED ON */
+#define led_activity_blink led_activity_on
+#endif
+#endif
+
 #endif

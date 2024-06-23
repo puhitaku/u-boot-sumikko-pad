@@ -91,6 +91,15 @@ config LED_GPIO
 	  The GPIO driver must used driver model. LEDs are configured using
 	  the device tree.
 
+config LED_GPIO_SW_BLINK
+	bool "LED support for GPIO software blink"
+	depends on LED_GPIO
+	select CYCLIC
+	select LED_BLINK
+	help
+	  Enable support for GPIO-connected LEDs to make use of Cyclic API
+	  to simulate LED blink by software.
+
 config SPL_LED_GPIO
 	bool "LED support for GPIO-connected LEDs in SPL"
         depends on SPL_LED && SPL_DM_GPIO

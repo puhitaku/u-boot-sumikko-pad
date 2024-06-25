@@ -847,23 +847,6 @@ int acpi_get_table_revision(enum acpi_tables table);
 int acpi_create_dmar(struct acpi_dmar *dmar, enum dmar_flags flags);
 
 /**
- * acpi_create_dbg2() - Create a DBG2 table
- *
- * This table describes how to access the debug UART
- *
- * @dbg2: Place to put information
- * @port_type: Serial port type (see ACPI_DBG2_...)
- * @port_subtype: Serial port sub-type (see ACPI_DBG2_...)
- * @address: ACPI address of port
- * @address_size: Size of address space
- * @device_path: Path of device (created using acpi_device_path())
- */
-void acpi_create_dbg2(struct acpi_dbg2_header *dbg2,
-		      int port_type, int port_subtype,
-		      struct acpi_gen_regaddr *address, uint32_t address_size,
-		      const char *device_path);
-
-/**
  * acpi_align() - Align the ACPI output pointer to a 16-byte boundary
  *
  * @ctx: ACPI context
@@ -942,6 +925,43 @@ void acpi_fill_header(struct acpi_table_header *header, char *signature);
  * @return 0 if OK, -ve on error
  */
 int acpi_fill_csrt(struct acpi_ctx *ctx);
+
+/**
+ * acpi_write_dbg2_pci_uart() - Write out a DBG2 table
+ *
+ * @ctx: Current ACPI context
+ * @dev: Debug UART device to describe
+ * @access_size: Access size for UART (e.g. ACPI_ACCESS_SIZE_DWORD_ACCESS)
+ * Return: 0 if OK, -ve on error
+ */
+int acpi_write_dbg2_pci_uart(struct acpi_ctx *ctx, struct udevice *dev,
+			     uint access_size);
+
+/**
+ * acpi_pl011_write_dbg2_uart() - Write out a DBG2 table
+ *
+ * To be used for PL011 style MMIO UARTs.
+ *
+ * @ctx: Current ACPI context
+ * @base: Memory base address of Debug UART
+ * @name: ACPI device path of the Debug UART
+ * Return: 0 if OK, -ve on error
+ */
+void acpi_pl011_write_dbg2_uart(struct acpi_ctx *ctx,
+				u64 base, const char *name);
+
+/**
+ * acpi_16550_mmio32_write_dbg2_uart() - Write out a DBG2 table
+ *
+ * To be used for 16550 style MMIO UARTs.
+ *
+ * @ctx: Current ACPI context
+ * @base: Memory base address of Debug UART
+ * @name: ACPI device path of the Debug UART
+ * Return: 0 if OK, -ve on error
+ */
+void acpi_16550_mmio32_write_dbg2_uart(struct acpi_ctx *ctx,
+				       u64 base, const char *name);
 
 /**
  * acpi_get_rsdp_addr() - get ACPI RSDP table address

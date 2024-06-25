@@ -927,6 +927,15 @@ void acpi_fill_header(struct acpi_table_header *header, char *signature);
 int acpi_fill_csrt(struct acpi_ctx *ctx);
 
 /**
+ * acpi_fill_fadt() - Fill out the body of the FADT
+ *
+ * Should be implemented in SoC specific code.
+ *
+ * @fadt: Pointer to FADT to update
+ */
+void acpi_fill_fadt(struct acpi_fadt *fadt);
+
+/**
  * acpi_write_dbg2_pci_uart() - Write out a DBG2 table
  *
  * @ctx: Current ACPI context

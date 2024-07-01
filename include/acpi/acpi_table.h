@@ -936,6 +936,17 @@ int acpi_fill_csrt(struct acpi_ctx *ctx);
 void acpi_fill_fadt(struct acpi_fadt *fadt);
 
 /**
+ * acpi_fill_madt() - Fill out the body of the MADT
+ *
+ * Must be implemented in SoC specific code.
+ *
+ * @madt: The MADT to update
+ * @current: Pointer to the MADT body
+ * @return Pointer to the end of tables, where the next tables can be written
+ */
+void *acpi_fill_madt(struct acpi_madt *madt, void *current);
+
+/**
  * acpi_write_dbg2_pci_uart() - Write out a DBG2 table
  *
  * @ctx: Current ACPI context

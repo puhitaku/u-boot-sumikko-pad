@@ -6,11 +6,13 @@
  * project.
  */
 
+#include <acpi/acpi_table.h>
 #include <cpu_func.h>
 #include <init.h>
 #include <dm/device.h>
 #include <fdt_support.h>
 #include <asm/global_data.h>
+#include <malloc.h>
 
 #define BCM2711_RPI4_PCIE_XHCI_MMIO_PHYS	0x600000000UL
 #define BCM2711_RPI4_PCIE_XHCI_MMIO_SIZE	0x400000UL
@@ -239,4 +241,32 @@ void enable_caches(void)
 {
 	dcache_enable();
 }
+#endif
+
+#ifdef CONFIG_GENERATE_ACPI_TABLE
+static int last_stage_init(void)
+{
+	ulong end;
+	void *ptr;
+
+	/* Reserve 64K for ACPI tables, aligned to a 4K boundary */
+	ptr = memalign(SZ_4K, SZ_64K);
+
+	/* Generate ACPI tables */
+	end = write_acpi_tables((uintptr_t)ptr);
+	if (end < 0) {
+		log_err("Failed to write tables\n");
+		return log_msg_ret("table", end);
+	}
+	if (end > ((ulong)ptr + SZ_64K)) {
+		log_err("ACPI tables overflowed\n");
+		return 0;
+	}
+
+	gd->arch.table_start = (uintptr_t)ptr;
+	gd->arch.table_end = end;
+
+	return 0;
+}
+EVENT_SPY_SIMPLE(EVT_LAST_STAGE_INIT, last_stage_init);
 #endif

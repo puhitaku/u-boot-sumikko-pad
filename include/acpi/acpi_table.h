@@ -952,6 +952,16 @@ void acpi_fill_fadt(struct acpi_fadt *fadt);
 void *acpi_fill_madt(struct acpi_madt *madt, void *current);
 
 /**
+ * acpi_write_parking_protocol() - Installs the ACPI parking protocol.
+ *
+ * Sets up the ACPI parking protocol and installs the spinning code for
+ * secondary CPUs.
+ *
+ * @madt: The MADT to update
+ */
+void acpi_write_parking_protocol(struct acpi_madt *madt);
+
+/**
  * acpi_write_dbg2_pci_uart() - Write out a DBG2 table
  *
  * @ctx: Current ACPI context

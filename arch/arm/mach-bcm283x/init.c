@@ -7,6 +7,7 @@
  */
 
 #include <acpi/acpi_table.h>
+#include <asm-generic/sections.h>
 #include <cpu_func.h>
 #include <init.h>
 #include <dm/device.h>
@@ -201,6 +202,52 @@ int mach_cpu_init(void)
 					       "brcm,bcm2712-pm");
 	if (offset > soc)
 		rpi_wdog_base = fdt_get_base_address(gd->fdt_blob, offset);
+	return 0;
+}
+
+int arch_early_init_r(void)
+{
+	int cpus, offset;
+	const char *prop;
+	u64 release_addr64;
+	uintptr_t *start_address;
+
+	if (CONFIG_IS_ENABLED(ARMV8_MULTIENTRY)) {
+		/*
+		 * Release CPUs from reset after u-boot has been relocated.
+		 */
+		cpus = fdt_path_offset(gd->fdt_blob, "/cpus");
+		if (cpus < 0)
+			return -ENODEV;
+
+		for (offset = fdt_first_subnode(gd->fdt_blob, cpus);
+		     offset >= 0;
+		     offset = fdt_next_subnode(gd->fdt_blob, offset)) {
+			prop = fdt_getprop(gd->fdt_blob, offset, "device_type", NULL);
+			if (!prop || strcmp(prop, "cpu"))
+				continue;
+
+			prop = fdt_getprop(gd->fdt_blob, offset, "enable-method", NULL);
+			if (!prop || strcmp(prop, "spin-table"))
+				continue;
+
+			release_addr64 = fdtdec_get_uint64(gd->fdt_blob, offset,
+							   "cpu-release-addr", ~0ULL);
+			if (release_addr64 == ~0ULL)
+				continue;
+
+			/* Point to U-Boot start */
+			start_address = (uintptr_t *)(uintptr_t)release_addr64;
+			*start_address = (uintptr_t)_start;
+
+			if (!CONFIG_IS_ENABLED(SYS_DCACHE_OFF))
+				flush_dcache_range(release_addr64,
+						   release_addr64 + sizeof(uintptr_t));
+			/* Send an event to wake up the secondary CPU. */
+			asm("dsb	ishst\n"
+			    "sev");
+		}
+	}
 
 	return 0;
 }

@@ -63,6 +63,6 @@ U_BOOT_CMD(ab_select, 5, 0, do_ab_select,
 	   "    - If 'part_name' is passed, preceded with a # instead of :, the\n"
 	   "      partition name whose label is 'part_name' will be looked up in\n"
 	   "      the partition table. This is commonly the \"misc\" partition.\n"
-           "    - If '--no-dec' is set, the number of tries remaining will not\n"
-           "      decremented for the selected boot slot\n"
+	   "    - If '--no-dec' is set, the number of tries remaining will not\n"
+	   "      decremented for the selected boot slot\n"
 );

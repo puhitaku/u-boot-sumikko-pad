@@ -61,7 +61,7 @@ static int install_smbios_table(void)
 	void *buf;
 
 	if (!IS_ENABLED(CONFIG_GENERATE_SMBIOS_TABLE) ||
-	    IS_ENABLED(CONFIG_X86) ||
+	    (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_SYSINFO_SMBIOS)) ||
 	    IS_ENABLED(CONFIG_QFW_SMBIOS))
 		return 0;
 

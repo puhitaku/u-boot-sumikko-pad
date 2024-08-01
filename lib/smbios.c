@@ -822,12 +822,11 @@ ulong write_smbios_table(ulong addr)
 	if (CONFIG_IS_ENABLED(SYSINFO)) {
 		uclass_first_device(UCLASS_SYSINFO, &ctx.dev);
 		if (ctx.dev) {
-			int ret;
+			int ret = sysinfo_detect(ctx.dev);
 
-			parent_node = dev_read_subnode(ctx.dev, "smbios");
-			ret = sysinfo_detect(ctx.dev);
-			if (ret)
+			if (ret && ret != ENOSYS)
 				return ret;
+			parent_node = dev_read_subnode(ctx.dev, "smbios");
 		}
 	} else {
 		ctx.dev = NULL;

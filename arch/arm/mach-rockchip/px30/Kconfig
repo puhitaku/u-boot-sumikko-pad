@@ -11,6 +11,9 @@ config TARGET_EVB_PX30
 config TARGET_ODROID_GO2
 	bool "ODROID_GO2"
 
+config TARGET_AGATSUMA_SUMIKKO_PAD_8INCH
+	bool "SUMIKKO_PAD_8INCH"
+
 config TARGET_PX30_CORE
 	bool "Engicam PX30.Core"
 	help
@@ -102,5 +105,6 @@ source "board/engicam/px30_core/Kconfig"
 source "board/hardkernel/odroid_go2/Kconfig"
 source "board/rockchip/evb_px30/Kconfig"
 source "board/theobroma-systems/ringneck_px30/Kconfig"
+source "board/agatsuma/sumikko_pad_8inch/Kconfig"
 
 endif

@@ -1,0 +1,12 @@
+if TARGET_AGATSUMA_SUMIKKO_PAD_8INCH
+
+config SYS_BOARD
+	default "sumikko_pad_8inch"
+
+config SYS_VENDOR
+	default "agatsuma"
+
+config SYS_CONFIG_NAME
+	default "sumikko_pad_8inch"
+
+endif

@@ -1,0 +1,6 @@
+SUMIKKO PAD 8-INCH
+M:      Takumi Sueda <puhitaku@gmail.com>
+S:      Maintained
+F:      board/agatsuma/sumikko_pad_8inch/
+F:      include/configs/sumikko_pad_8inch.h
+F:      configs/sumikko-pad-8inch_defconfig

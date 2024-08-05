@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2024 Takumi Sueda <puhitaku@gmail.com>
+ */
+
+#include "rk3326-odroid-go2-u-boot.dtsi"
+
+/ {
+	model = "Sumikko Pad 8-inch";
+	compatible = "agatsuma,rk3326-sumikko-pad-8inch", "rockchip,rk3326";
+
+	chosen {
+		stdout-path = "serial1:115200n8";
+	};
+};

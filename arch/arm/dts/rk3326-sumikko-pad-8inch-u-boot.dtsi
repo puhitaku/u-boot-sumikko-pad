@@ -13,3 +13,16 @@
 		stdout-path = "serial1:115200n8";
 	};
 };
+
+&backlight {
+	pwms = <&pwm1 0 25000 0>;
+	status = "okay";
+};
+
+&pinctrl {
+	pwm1 {
+		pwm1-pin {
+			rockchip,pins = <0 RK_PC0 1 &pcfg_pull_none>;
+		};
+	};
+};
